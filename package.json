@@ -1,10 +1,10 @@
 {
-  "name": "nice-tree",
+  "name": "bamboo-tree",
   "version": "0.0.1",
   "description": "Parse your file directory into a nice index.html home page.",
   "type": "module",
   "bin": {
-    "nice-tree": "./dist/cli.js"
+    "bamboo-tree": "./dist/cli.js"
   },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -15,7 +15,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "templates"
   ],
   "scripts": {
     "build": "tsup",
