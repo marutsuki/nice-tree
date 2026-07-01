@@ -10,19 +10,11 @@
     <style>
       @import "tailwindcss";
       @plugin "daisyui" {
-        themes: nord --default, night --prefersdark;
+        themes: garden --default, night --prefersdark;
       }
       :root {
         color-scheme: light dark;
         font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      }
-
-      body {
-        margin: 0;
-        padding: 2rem;
-        background: #efefef;
-        height: 100vh;
-        color: #1e1e1e;
       }
 
       h1 {
@@ -33,24 +25,147 @@
       .icon {
         font-size: 1rem;
       }
+
+      .tree,
+      .tree ul {
+        list-style: none;
+        margin: 0;
+        padding-left: 0;
+      }
+
+      .tree ul {
+        position: relative;
+        margin-left: 1.35rem;
+        padding-left: 1.25rem;
+      }
+
+      .tree ul::before {
+        content: "";
+        position: absolute;
+        top: -0.50rem;
+        bottom: calc(100% - 0.55rem);
+        left: -0.8rem;
+        width: 2px;
+        border-radius: 999px;
+        background: linear-gradient(to top, #6f8f72, transparent);
+        opacity: 1;
+      }
+
+      .tree ul::after {
+        content: "";
+        position: absolute;
+        top: 0.35rem;
+        bottom: 2.35rem;
+        left: -0.8rem;
+        width: 2px;
+        border-radius: 999px;
+        background: #6f8f72;
+        opacity: 1;
+      }
+
+      .tree ul > .node::before {
+        content: "";
+        position: absolute;
+        top: 1rem;
+        left: -2.05rem;
+        width: 2.05rem;
+        height: 0.9rem;
+        border-bottom: 2px solid #6f8f72;
+        border-left: 2px solid #6f8f72;
+        border-bottom-left-radius: 0.9rem;
+      }
+
+      .tree ul > .node::after {
+        content: "";
+        position: absolute;
+        top: 1.775rem;
+        left: 0;
+        width: 1.00rem;
+        height: 2px;
+        background: linear-gradient(to right, #6f8f72, transparent);
+      }
+
+      .branch-sprig {
+        position: absolute;
+        color: #6f8f72;
+        opacity: 0.7;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .branch-sprig-1 {
+        transform: rotate(175deg);
+        top: 1rem;
+        left: -2.85rem;
+        width: 1rem;
+        height: 1rem;
+      }
+
+      .branch-sprig-2 {
+        transform: rotate(235deg) scale(1.2);
+        top: 0.65rem;
+        left: -2.95rem;
+        width: 1rem;
+        height: 1rem;
+      }
+
+      .branch-sprig-3 {
+        transform: rotate(0deg) scale(1.1);
+        top: 0.55rem;
+        left: -2.1rem;
+        width: 1rem;
+        height: 1rem;
+      }
+
+      .tree > .node > .entry > .branch-sprig {
+        display: none;
+      }
+
+      .collapse-content > ul {
+        margin-top: 0.35rem;
+        padding-bottom: 0.35rem;
+      }
+
     </style>
   </head>
-  <body>
-    <main class="container mx-auto p-4">
+  <body class="bg-base-200 text-base-content min-h-screen pb-20">
+    <main class="container mx-auto p-4 pb-16">
       <h1><%= root.name %></h1>
+      <hr/>
       <ul class="tree">
         <% function renderNode(node, isRoot = false) { %>
-          <li class="node">
+          <% const sprigVariant = isRoot ? 0 : Math.floor(Math.random() * 10); %>
+          <li class="node relative">
             <span class="entry">
+              <% if (sprigVariant === 1) { %>
+                <svg class="branch-sprig branch-sprig-1" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                  <path d="M3 15 C7 12, 9 8, 16 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                  <path d="M10 8 C10 5.5, 11.5 3.8, 14 3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                  <path d="M9 9 C6.8 8.4, 5.3 7.1, 4.6 5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                </svg>
+              <% } else if (sprigVariant === 2) { %>
+                <svg class="branch-sprig branch-sprig-2" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                  <path d="M3 14 C6 12, 8 9, 15 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                  <path d="M8 10 C8.5 7.2, 10.2 5.4, 13 4.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                  <path d="M11 8 C13 8.6, 14.5 9.8, 15.8 12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                </svg>
+              <% } else if (sprigVariant === 3) { %>
+                <svg class="branch-sprig branch-sprig-3" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                  <path d="M4 16 C6.5 12.5, 10 9.5, 16 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                  <path d="M7.5 12 C5.9 10.6, 4.9 8.7, 4.7 6.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                  <path d="M10.5 9.4 C11.4 6.9, 13.1 5.2, 15.5 4.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                  <path d="M12.4 7.8 C14.3 8.3, 15.7 9.5, 16.8 11.4" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+                </svg>
+              <% } %>
               <% if (node.type === "directory") { %>
                 <div class="collapse bg-base-100 border border-base-300 <%= isRoot ? "collapse-open" : "" %>">
                   <input type="checkbox" />
-                  <div class="collapse-title font-semibold flex flex-start items-center gap-2">
+                  <div class="collapse-title h-12 font-semibold flex flex-start items-center gap-2">
                     <i class="fa-solid fa-folder icon mt-1"></i><%= node.name %>
                   </div>
                   <% if (Array.isArray(node.children) && node.children.length > 0) { %>
                     <div class="collapse-content">
-                        <ul class="flex flex-col gap-2">
+                        <ul class="flex flex-col gap-2 mt-0!">
                             <% node.children.forEach(function (child) { %>
                                 <% renderNode(child); %>
                                 <% }); %>
@@ -59,7 +174,7 @@
                   <% } %>
                 </div>
               <% } else { %>
-                <div class="flex items-center gap-2 ml-4">
+                <div class="file-entry h-12 flex items-center gap-2 ml-4">
                   <i class="fa-solid fa-file icon mt-1"></i>
                   <a class="link link-secondary" href="<%= node.path %>"><%= node.name %></a>
                 </div>
@@ -71,5 +186,8 @@
         <% renderNode(root, true); %>
       </ul>
     </main>
+    <footer class="fixed bottom-0 left-0 right-0 h-12 border-t border-base-300 bg-base-200/95 px-4 py-3 text-sm flex items-center justify-center backdrop-blur">
+      Made with <a href="https://github.com/marutsuki/nice-tree" target="_blank" class="link link-primary ml-1">Nice Tree</a>
+    </footer>
   </body>
 </html>
