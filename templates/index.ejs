@@ -72,7 +72,7 @@
           <li class="node">
             <span class="entry">
               <span class="icon"><%= node.type === "directory" ? "📁" : "📄" %></span>
-              <span class="name"><%= node.name %></span>
+              <a class="name" href="<%= node.path %>"><%= node.name %></a>
             </span>
             <% if (node.type === "directory" && Array.isArray(node.children) && node.children.length > 0) { %>
               <ul>

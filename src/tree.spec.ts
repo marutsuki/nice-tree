@@ -28,12 +28,13 @@ function normalizeTree(
   node: ReturnType<typeof getDirectoryTree>,
 ): ReturnType<typeof getDirectoryTree> {
   if (node.type === "file") {
-    return { name: node.name, type: node.type };
+    return { name: node.name, type: node.type, path: node.path };
   }
 
   return {
     name: node.name,
     type: node.type,
+    path: node.path,
     children: (node.children ?? [])
       .map((child) => normalizeTree(child))
       .sort((left, right) => left.name.localeCompare(right.name)),
@@ -50,7 +51,11 @@ test("returns a file node for a single file path", () => {
 
   const tree = getDirectoryTree(filePath);
 
-  assert.deepStrictEqual(tree, { name: "README.md", type: "file" });
+  assert.deepStrictEqual(tree, {
+    name: "README.md",
+    type: "file",
+    path: filePath,
+  });
 });
 
 test("returns an empty directory node when the directory has no children", () => {
@@ -61,6 +66,7 @@ test("returns an empty directory node when the directory has no children", () =>
   assert.deepStrictEqual(tree, {
     name: path.basename(directory),
     type: "directory",
+    path: directory,
     children: [],
   });
 });
@@ -86,22 +92,46 @@ test("builds a nested tree with files and directories", () => {
   assert.deepStrictEqual(normalizeTree(tree), {
     name: path.basename(root),
     type: "directory",
+    path: root,
     children: [
       {
         name: "docs",
         type: "directory",
-        children: [{ name: "guide.md", type: "file" }],
+        path: docsDirectory,
+        children: [
+          {
+            name: "guide.md",
+            type: "file",
+            path: path.join(docsDirectory, "guide.md"),
+          },
+        ],
       },
-      { name: "package.json", type: "file" },
+      {
+        name: "package.json",
+        type: "file",
+        path: path.join(root, "package.json"),
+      },
       {
         name: "src",
         type: "directory",
+        path: srcDirectory,
         children: [
-          { name: "index.ts", type: "file" },
+          {
+            name: "index.ts",
+            type: "file",
+            path: path.join(srcDirectory, "index.ts"),
+          },
           {
             name: "utils",
             type: "directory",
-            children: [{ name: "helper.ts", type: "file" }],
+            path: utilsDirectory,
+            children: [
+              {
+                name: "helper.ts",
+                type: "file",
+                path: path.join(utilsDirectory, "helper.ts"),
+              },
+            ],
           },
         ],
       },
@@ -119,7 +149,10 @@ test("includes empty directories as children with an empty children array", () =
   assert.deepStrictEqual(normalizeTree(tree), {
     name: path.basename(root),
     type: "directory",
-    children: [{ name: "empty", type: "directory", children: [] }],
+    path: root,
+    children: [
+      { name: "empty", type: "directory", path: emptyDirectory, children: [] },
+    ],
   });
 });
 
