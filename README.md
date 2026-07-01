@@ -2,7 +2,7 @@
 
 ![npm version](https://img.shields.io/npm/v/bamboo-tree.svg)
 ![Node.js](https://img.shields.io/badge/node-%3E%3D18-brightgreen)
-![License](https://img.shields.io/badge/license-ISC-blue)
+![License](https://img.shields.io/badge/license-MIT-blue)
 
 bamboo-tree is a small CLI tool that turns a directory into a polished, browsable HTML index page. It is useful for publishing a directory listing as a simple static site without needing a full web server or CMS.
 
